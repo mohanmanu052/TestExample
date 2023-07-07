@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
+import 'package:test_example/constants/parsing_date.dart';
 import 'package:test_example/controller/home_controller.dart';
 import 'package:test_example/models/profile_model.dart';
 
@@ -80,9 +81,9 @@ class _ProfileViewState extends State<ProfileView> {
                   textdata('Name', data.name?.first ?? ''),
                   textdata('Location', data.location?.city ?? ''),
                   textdata('Email', data.email ?? ''),
-                  textdata('Dob', data.dob!.date.toString()),
+                  textdata('Dob', ParseDate.parseDob(data.dob!.date!)),
                   textdata('No Of Days Passed Since Register',
-                      data.registered!.date.toString())
+                      ParseDate.calculateNumberOfdays(data.registered!.date!))
                 ],
               ),
             )

@@ -1,11 +1,37 @@
 import 'package:flutter/material.dart';
+import 'package:geolocator/geolocator.dart';
 import 'package:provider/provider.dart';
 import 'package:test_example/controller/home_controller.dart';
 import 'package:test_example/screens/home_page.dart';
 import 'package:test_example/testLatLong/test_lat_pang.dart';
+import 'package:workmanager/workmanager.dart';
+
+@pragma(
+    'vm:entry-point') // Mandatory if the App is obfuscated or using Flutter 3.1+
+void callbackDispatcher() {
+  Workmanager().executeTask((task, inputData) async {
+    switch (task) {
+      case "_determinePosition":
+        print('coming to the task to set lat laong valuess-----');
+        Position userLocation = await Geolocator.getCurrentPosition(
+            desiredAccuracy: LocationAccuracy.high);
+        String latValue = userLocation.latitude.toString();
+        String longValue = userLocation.longitude.toString();
+    }
+    return Future.value(true);
+  });
+}
 
 void main() {
-  runApp(const MyApp());
+  WidgetsFlutterBinding.ensureInitialized();
+  Workmanager().initialize(callbackDispatcher);
+  Workmanager().registerPeriodicTask(
+    "1",
+    "_determinePosition",
+    frequency: Duration(seconds: 2),
+  );
+
+  runApp(MyApp());
 }
 
 class MyApp extends StatelessWidget {

@@ -1,10 +1,8 @@
 import 'dart:async';
-
-import 'package:background_fetch/background_fetch.dart';
 import 'package:flutter/material.dart';
 import 'package:geolocator/geolocator.dart';
-import 'package:flutter_background_geolocation/flutter_background_geolocation.dart'
-    as bg;
+import 'package:test_example/main.dart';
+import 'package:workmanager/workmanager.dart';
 
 class TestLatLangData extends StatefulWidget {
   const TestLatLangData({super.key});
@@ -17,10 +15,16 @@ class _TestLatLangDataState extends State<TestLatLangData> {
   String? latValue;
   String? longValue;
   bool positionStreamStarted = false;
+
   @override
   void initState() {
     _determinePosition();
-    fetchLocationForEvery10Sec();
+    // Workmanager().initialize(
+    //     callbackDispatcher, // The top level function, aka callbackDispatcher
+    //     isInDebugMode:
+    //         true // If enabled it will post a notification whenever the task is running. Handy for debugging tasks
+    //     );
+
     // TODO: implement initState
     super.initState();
   }
@@ -62,6 +66,7 @@ class _TestLatLangDataState extends State<TestLatLangData> {
   }
 
   Future<Position> _determinePosition() async {
+    print('coming to location service-------');
     bool serviceEnabled;
     LocationPermission permission;
 
@@ -95,57 +100,28 @@ class _TestLatLangDataState extends State<TestLatLangData> {
 
     // When we reach here, permissions are granted and we can
     // continue accessing the position of the device.
-    Position position = await Geolocator.getCurrentPosition(
-        desiredAccuracy: LocationAccuracy.high);
-    latValue = position.latitude.toString();
-    longValue = position.longitude.toString();
-    setState(() {});
+    Timer.periodic(Duration(seconds: 5), (Timer timer) async {
+      print('coming to location service------2');
+      Position position = await Geolocator.getCurrentPosition(
+          desiredAccuracy: LocationAccuracy.high);
+      latValue = position.latitude.toString();
+      longValue = position.longitude.toString();
+      setState(() {});
+    });
     return await Geolocator.getCurrentPosition();
   }
 
-  Future<void> initLocationTracking() async {
-    bg.BackgroundGeolocation.onLocation((bg.Location location) {
-      print('[location] - $location');
-    });
+  // Future<void> initLocationTracking() async {
+  // }
 
-    // Fired whenever the plugin changes motion-state (stationary->moving and vice-versa)
-    bg.BackgroundGeolocation.onMotionChange((bg.Location location) {
-      print('[motionchange] - $location');
-    });
-
-    // Fired whenever the state of location-services changes.  Always fired at boot
-    bg.BackgroundGeolocation.onProviderChange((bg.ProviderChangeEvent event) {
-      print('[providerchange] - $event');
-    });
-
-    ////
-    // 2.  Configure the plugin
-    //
-    bg.BackgroundGeolocation.ready(bg.Config(
-            desiredAccuracy: bg.Config.DESIRED_ACCURACY_HIGH,
-            distanceFilter: 10.0,
-            stopOnTerminate: false,
-            startOnBoot: true,
-            debug: true,
-            logLevel: bg.Config.LOG_LEVEL_VERBOSE))
-        .then((bg.State state) {
-      if (!state.enabled) {
-        ////
-        // 3.  Start the plugin.
-        //
-        bg.BackgroundGeolocation.start();
-      }
-    });
-  }
-
-  void fetchLocationForEvery10Sec() async {
-    BackgroundFetch.configure(
-        BackgroundFetchConfig(
-          minimumFetchInterval: 10, // Fetch interval in seconds
-          stopOnTerminate: false,
-          startOnBoot: true,
-          enableHeadless: true,
-        ),
-        initLocationTracking);
-  }
+  // void fetchLocationForEvery10Sec() async {
+  //   BackgroundFetch.configure(
+  //       BackgroundFetchConfig(
+  //         minimumFetchInterval: 10, // Fetch interval in seconds
+  //         stopOnTerminate: false,
+  //         startOnBoot: true,
+  //         enableHeadless: true,
+  //       ),
+  //       initLocationTracking);
+  // }
 }

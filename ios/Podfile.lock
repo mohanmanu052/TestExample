@@ -10,12 +10,15 @@ PODS:
     - Flutter
   - geolocator_apple (1.2.0):
     - Flutter
+  - workmanager (0.0.1):
+    - Flutter
 
 DEPENDENCIES:
   - background_fetch (from `.symlinks/plugins/background_fetch/ios`)
   - Flutter (from `Flutter`)
   - flutter_background_geolocation (from `.symlinks/plugins/flutter_background_geolocation/ios`)
   - geolocator_apple (from `.symlinks/plugins/geolocator_apple/ios`)
+  - workmanager (from `.symlinks/plugins/workmanager/ios`)
 
 SPEC REPOS:
   trunk:
@@ -30,6 +33,8 @@ EXTERNAL SOURCES:
     :path: ".symlinks/plugins/flutter_background_geolocation/ios"
   geolocator_apple:
     :path: ".symlinks/plugins/geolocator_apple/ios"
+  workmanager:
+    :path: ".symlinks/plugins/workmanager/ios"
 
 SPEC CHECKSUMS:
   background_fetch: bc9b44b0bf8b434e282a2ac9be8662800a0296ed
@@ -37,6 +42,7 @@ SPEC CHECKSUMS:
   Flutter: f04841e97a9d0b0a8025694d0796dd46242b2854
   flutter_background_geolocation: cbf42fef11105bc568488a103116ccfd3f099788
   geolocator_apple: cc556e6844d508c95df1e87e3ea6fa4e58c50401
+  workmanager: 0afdcf5628bbde6924c21af7836fed07b42e30e6
 
 PODFILE CHECKSUM: 70d9d25280d0dd177a5f637cdb0f0b0b12c6a189
 
